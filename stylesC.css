@@ -10,6 +10,8 @@
     grid-template-areas: "form mapa";
     height: 100%;
     align-self: stretch;
+    justify-items: center; /**/
+    
 }
 
 .form {
@@ -123,16 +125,45 @@ header {
 
 
 } */
+@media (max-width: 600px) {
+    .containerMain {
+        grid-template: 1fr 1fr / 100%;
+        grid-template-areas: "form"
+            "mapa";
+    }
+}
+
+
 .comment-box {
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 25px;    
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #F8FA9E;
+    width: 100%;
+    /* background-color: #F8FA9E; */
+    height: auto;
 }
-#divForm {
+#divForm, #divMapa {
     background-color: #F8FA9E;
+    height: 500px;    
+    width: 95%;/**/
 }
 #btnConsulta {
     background-color: var(--colorBotonEnviar);
 }
+#contenedor{    
+    height: 100%;
+    width: 100%;
+    margin-left: 5px;
+    /* margin-top: 5px;
+    margin-bottom: 5px; */
+    overflow: auto;    
+}
+#container{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;   
+    height: 100%
+}
+
