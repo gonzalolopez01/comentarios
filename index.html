@@ -69,14 +69,18 @@
         </section>
         <div class="item form mx-3 mb-4 p-3" id="divForm">
             <h2>Te gustó Perfy? dejanos tu comentario!</h2>
-            <form>             
+            <form id="formComentario">             
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="Ingresa tu email">
               </div>
               <div class="mb-3">
-                <label for="mensaje" class="form-label">Mensaje</label>
-                <textarea class="form-control" id="mensaje" rows="3" placeholder="Deja tu mensaje"></textarea>
+                <label for="calificacion" class="form-label">Calificacion</label>
+                <input type="number" class="form-control" id="calificacion" min="1" max="5">
+              </div>
+              <div class="mb-3">
+                <label for="comentario" class="form-label">Mensaje</label>
+                <textarea class="form-control" id="comentario" rows="3" placeholder="Deja tu mensaje"></textarea>
               </div>
               <button id="btnConsulta" type="submit" class="btn raleway-font">Enviar</button>
             </form>

@@ -1,22 +1,29 @@
-const apiUrl = 'https://api.jsonbin.io/v3/b/66914c86e41b4d34e410dc28';
+const apiUrl = 'https://api.jsonbin.io/v3/b/66917958ad19ca34f886abab';
 const apiKey = '$2a$10$sNZLYjuLxN.hrL29yzXdle31WS4a/q7cFSwcwduy382aB11WfnSZO';
 
 const contenedor = document.getElementById("contenedor");
 
 // cargo los comentarios
-async function loadComment() {
+async function loadComments() {
     try {
         const response = await fetch(apiUrl, {
             headers: {
                 'X-Master-Key': apiKey
             }
         });
-        const data = await response.json();   
-        console.log(data);
-       
-        let comentarios = [];
+        const data = await response.json();  
+        console.log(data.record);
+
+        showComments(data.record);
+        
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+    }
+}
+function showComments(comentarios){
+    // let comentarios = [];
    
-        data.record.forEach(comentario => {
+        comentarios.forEach(comentario => {
             // Crea elementos HTML para mostrar cada atributo
             const div = document.createElement('div');
             div.classList.add('comment-box');
@@ -42,25 +49,36 @@ async function loadComment() {
             contenedor.appendChild(div);
         });           
         //contenedor.innerHTML = comentarios;
-    } catch (error) {
-        console.error('Error al cargar los datos:', error);
-    }
+
 }
 
 //agregar comentario
 
-async function addComment(comentario) {
-    const response = await fetch(binUrl, {
+async function addComment(nuevoComentario) {
+    //traigo comentarios
+    const response = await fetch(apiUrl, {
+        headers: {
+            'X-Master-Key': apiKey
+        }
+    });
+    const data = await response.json();  
+    //console.log(data.record);
+    const comentariosExistentes = data.record;
+
+    //agrego comentarios
+    comentariosExistentes.push(nuevoComentario)
+
+    const updateResponse = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'X-Master-Key': apiKey
         },
-        body: JSON.stringify(comentario)
+        body: JSON.stringify(comentariosExistentes)
     });
 
-    if (response.ok) {
-        fetchData(); // Actualizar los comentarios después de agregar uno nuevo
+    if (updateResponse.ok) {
+        loadComments(); // Actualizar los comentarios después de agregar uno nuevo
     } else {
         console.error('Error al agregar el comentario');
     }
@@ -69,14 +87,27 @@ async function addComment(comentario) {
 document.getElementById('formComentario').addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const nuevoComentario = {
+        const fechaActual = new Date();
+
+        // Obtener los componentes de la fecha
+        const dia = String(fechaActual.getDate()).padStart(2, '0'); // Día con dos dígitos
+        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Mes con dos dígitos (los meses empiezan en 0)
+        const año = fechaActual.getFullYear(); // Año
+
+        // Formatear la fecha en formato día/mes/año
+        const fechaFormateada = `${dia}/${mes}/${año}`;
+
+        // Mostrar la fecha en el documento HTML
+        //document.getElementById('fecha').textContent = `Fecha Actual: ${fechaFormateada}`;
+
+        const nuevoComentario = {
         email: document.getElementById('email').value,
-        fecha: document.getElementById('fecha').value,
+        fechaFormateada,
         calificacion: document.getElementById('calificacion').value,
         comentario: document.getElementById('comentario').value
-    };
+        };
 
-    agregarComentario(nuevoComentario);
+    addComment(nuevoComentario);
 });
 
-loadComment();
+loadComments();
